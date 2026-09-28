@@ -313,8 +313,8 @@ td select,.sel{padding:5px 8px;border:1px solid var(--line);border-radius:8px;ba
         <div class="panel">
           <div class="panel-head"><h2>Tus asistentes</h2><small>Toca uno para trabajar con él</small></div>
           <div class="agents">
-            <button class="agent" data-go="almacen"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg></span><h3>Asistente de Almacén</h3><p>Registra a mano, sube el PDF de la guía o escríbele "salieron 6 cajas de guantes". Actualiza el stock y avisa los mínimos. Fotos: próximamente.</p></button>
-            <button class="agent" data-go="facturas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><h3>Asistente Administrativo</h3><p>Sube la factura del proveedor (XML o PDF). La cruza con la orden de compra y la guía, y arma el paquete del contador.</p></button>
+            <button class="agent" data-go="almacen"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg></span><h3>Asistente de Almacén</h3><p>Mándale la foto o el PDF de la guía, o escríbele "salieron 6 cajas de guantes". Actualiza el stock y avisa los mínimos.</p></button>
+            <button class="agent" data-go="facturas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><h3>Asistente Administrativo</h3><p>Sube la factura del proveedor (foto, PDF o XML). La cruza con la orden de compra y la guía, y arma el paquete del contador.</p></button>
             <button class="agent" data-go="reporte"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg></span><h3>Asistente de Reportes</h3><p>El resumen de la semana para el dueño: ventas, stock y cuentas por cobrar, con acciones concretas.</p></button>
           </div>
         </div>
@@ -329,8 +329,8 @@ td select,.sel{padding:5px 8px;border:1px solid var(--line);border-radius:8px;ba
         </div>
         <div class="panel composer">
           <div class="seg" role="group" aria-label="Forma de registro">
-            <button class="segbtn" data-mode="manual" aria-pressed="true">Registro a mano</button>
-            <button class="segbtn" data-mode="ia" aria-pressed="false">Con IA: mensaje o PDF</button>
+            <button class="segbtn" data-mode="ia" aria-pressed="true">Enviar al asistente</button>
+            <button class="segbtn" data-mode="manual" aria-pressed="false">Registro a mano</button>
           </div>
           <div id="alm-manual" class="composer">
             <div class="mgrid">
@@ -351,15 +351,16 @@ td select,.sel{padding:5px 8px;border:1px solid var(--line);border-radius:8px;ba
             <div class="thumbs" id="alm-thumbs"></div>
             <div class="row" style="justify-content:space-between">
               <div class="row">
-                <label class="btn filebtn">Subir PDF<input type="file" id="alm-file" accept=".pdf,application/pdf,.txt" multiple></label>
-                <span class="soon" title="Muy pronto podrás tomar la foto de la guía desde el celular">Fotos · próximamente</span>
+                <label class="btn primary filebtn">Tomar foto<input type="file" id="alm-cam" accept="image/*" capture="environment"></label>
+                <label class="btn filebtn">Subir PDF o foto<input type="file" id="alm-file" accept=".pdf,application/pdf,image/*,.txt" multiple></label>
                 <div class="chips"><button class="chip" data-ex="guia">Ejemplo: guía de proveedor</button><button class="chip" data-ex="wa">Ejemplo: chat de WhatsApp</button></div>
               </div>
-              <button class="btn primary" id="alm-go">Leer y preparar registro</button>
+              <button class="btn primary" id="alm-go">Enviar al asistente</button>
             </div>
           </div>
           <div class="status" id="alm-status"></div>
         </div>
+        <div class="panel" hidden><div class="panel-head"><h2>Bandeja del asistente</h2><small>Se actualiza sola</small></div><ul class="feed" id="alm-bandeja"></ul></div>
         <div id="alm-preview"></div>
         <div class="grid2">
           <div class="panel">
@@ -378,21 +379,22 @@ td select,.sel{padding:5px 8px;border:1px solid var(--line);border-radius:8px;ba
         <div class="hello">
           <span class="label">Asistente Administrativo</span>
           <h1>Facturas de proveedores</h1>
-          <p class="lede">Sube el XML de SUNAT (se lee sin IA, exacto y gratis) o el PDF de la factura (lo lee la IA). La cruzo con la orden de compra y con lo que almacén recibió.</p>
+          <p class="lede">Sube el XML de SUNAT (se lee al instante, exacto) o la foto o PDF de la factura (lo lee el asistente). La cruzo con la orden de compra que cargaste en Datos y con lo que almacén recibió.</p>
         </div>
         <div class="panel composer">
           <textarea id="fac-text" placeholder="Sube el XML o el PDF de la factura, o pega aquí su texto"></textarea>
           <div class="thumbs" id="fac-thumbs"></div>
           <div class="row" style="justify-content:space-between">
             <div class="row">
-              <label class="btn primary filebtn">Subir XML o PDF<input type="file" id="fac-file" accept=".xml,text/xml,application/xml,.pdf,application/pdf,.txt" multiple></label>
-              <span class="soon" title="Muy pronto podrás tomar la foto de la factura desde el celular">Fotos · próximamente</span>
+              <label class="btn primary filebtn">Tomar foto<input type="file" id="fac-cam" accept="image/*" capture="environment"></label>
+              <label class="btn filebtn">Subir XML, PDF o foto<input type="file" id="fac-file" accept=".xml,text/xml,application/xml,.pdf,application/pdf,image/*,.txt" multiple></label>
               <div class="chips"><button class="chip" data-ex="factxt">Ejemplo: factura con diferencia</button><button class="chip" data-ex="facxml">Ejemplo: XML de SUNAT</button></div>
             </div>
             <button class="btn primary" id="fac-go">Revisar y conciliar</button>
           </div>
           <div class="status" id="fac-status"></div>
         </div>
+        <div class="panel" hidden><div class="panel-head"><h2>Bandeja del asistente</h2><small>Se actualiza sola</small></div><ul class="feed" id="fac-bandeja"></ul></div>
         <div id="fac-preview" style="display:grid;gap:14px"></div>
         <div class="panel">
           <div class="panel-head"><h2>Paquete para el contador</h2><small id="pkg-sub"></small></div>
@@ -651,6 +653,7 @@ let raf = 0;
 const schedule = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; renderAll(); }); };
 function renderAll() {
   renderTop(); renderHoy(); renderStock(); renderMovs(); renderPkg(); renderFacList(); renderReporte(); renderDatos();
+  renderBandeja('almacen'); renderBandeja('factura');
 }
 function setBanner(msg) { const b = $('#banner'); b.textContent = msg || ''; b.hidden = !msg; }
 function status(id, msg, kind = '', busy = false, stopFn = null) {
@@ -680,6 +683,7 @@ function renderHoy() {
   $('#kpis').innerHTML = kpiTiles(r);
 
   const items = [];
+  for (const b of Object.values(S.bandeja || {}).filter(b => b.estado === 'LISTO')) items.push({sev: 'ink', html: `<b>El asistente leyó ${b.tipo === 'almacen' ? 'un documento de almacén' : 'una factura'}</b><small>${esc((b.archivos || []).map(a => a.nombre).join(', ') || (b.texto || '').slice(0, 60))} · listo para revisar</small>`, go: b.tipo === 'almacen' ? 'almacen' : 'facturas', cta: 'Revisar'});
   for (const p of r.bajo) items.push({sev: 'bad', html: `<b>${esc(p.descripcion)}</b><small>Quedan ${fmtN(p.stock)} ${esc(p.unidad)} · mínimo ${fmtN(p.minimo)}${p.oc ? ` · ${esc(p.oc.oc)} en camino (${fmtN(p.oc.pend)})` : ' · sin orden de compra en curso'}</small>`, go: 'almacen', cta: 'Ver stock'});
   for (const f of r.observadas) items.push({sev: 'warn', html: `<b>Factura ${esc(f.serie_numero)} · ${esc(f.proveedor)}</b><small>${esc(f.estado.toLowerCase())}: ${esc((f.observaciones || '').slice(0, 110))}</small>`, go: 'facturas', cta: 'Resolver'});
   for (const x of parciales()) items.push({sev: 'ink', html: `<b>Entrega parcial ${esc(x.oc)}</b><small>Faltan ${fmtN(x.falta)} de ${esc(pdesc(x.codigo))} · ${esc(x.proveedor)}</small>`, go: 'almacen', cta: 'Ver'});
@@ -742,7 +746,7 @@ function setAlmMode(mode) {
   document.querySelectorAll('.segbtn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
   $('#alm-manual').hidden = mode !== 'manual';
   $('#alm-ia').hidden = mode !== 'ia';
-  status('alm', mode === 'ia' && !sample ? 'La lectura con IA se activa pronto. Mientras tanto usa "Registro a mano".' : '', mode === 'ia' && !sample ? 'warn' : '');
+  status('alm', '');
 }
 function readMRows() {
   document.querySelectorAll('#m-rows .mrow').forEach((r, i) => { if (mRows[i]) { mRows[i].codigo = r.querySelector('select').value; mRows[i].cantidad = r.querySelector('input').value; } });
@@ -820,7 +824,17 @@ function ocsAbiertas() { return Object.values(S.ocs).filter(o => !o.facturada).s
 async function procesarAlmacen() {
   const text = $('#alm-text').value.trim();
   if (!text && !almFiles.length) return status('alm', 'Escribe un mensaje o adjunta la foto de la guía.', 'warn');
-  if (!sample) return status('alm', 'La lectura con IA se activa pronto. Mientras tanto usa "Registro a mano".', 'warn');
+  if (!sample) {
+    $('#alm-go').disabled = true;
+    try {
+      status('alm', 'Enviando al asistente…', '', true);
+      await enviarBandeja('almacen', text, almFiles);
+      almFiles = []; renderThumbs('alm'); $('#alm-text').value = '';
+      status('alm', 'Enviado. El asistente lo lee en unos minutos y te aparece abajo para revisar.', 'ok');
+    } catch (e) { status('alm', 'No se pudo enviar. Revisa tu conexión y vuelve a intentar.', 'bad'); }
+    finally { $('#alm-go').disabled = false; }
+    return;
+  }
   let body = text;
   const imgs = [], pdfs = [];
   for (const f of almFiles) {
@@ -862,22 +876,29 @@ ${body.slice(0, 30000) || '(ver el documento adjunto)'}
     if (imgs.length) opts.images = imgs.slice(0, imgMax || 5);
     if (pdfDocs.length) opts.documents = pdfDocs.slice(0, 3);
     const res = await sample.json(prompt, opts);
-    const docs = (res && Array.isArray(res.documentos) ? res.documentos : []).map(d => ({
-      tipo: ['INGRESO', 'SALIDA', 'AJUSTE'].includes(d.tipo) ? d.tipo : 'SALIDA',
-      fecha: /^\d{4}-\d{2}-\d{2}$/.test(d.fecha || '') ? d.fecha : TODAY,
-      documento: String(d.documento || `WA-${TODAY.replace(/-/g, '')}`).trim(),
-      oc: String(d.oc || '').trim().toUpperCase(), tercero: String(d.tercero || '').trim(),
-      fuente: pdfs.length ? 'pdf' : imgs.length ? 'foto' : (d.fuente || 'mensaje'), nota: String(d.nota || ''),
-      items: (d.items || []).map(it => ({texto: String(it.texto || ''), codigo: prod(it.codigo) ? it.codigo : null, cantidad: Number(it.cantidad) || 0, unidad: String(it.unidad || ''), include: true}))
-    })).filter(d => d.items.length);
-    if (!docs.length) { status('alm', 'No encontré movimientos en lo que enviaste. Revisa el texto o el PDF.', 'warn'); return; }
-    for (const d of docs) for (const it of d.items) if (it.codigo && S.movs.some(m => m.documento === d.documento && m.codigo === it.codigo)) it.include = false;
-    almPending = {docs, dudas: Array.isArray(res.dudas) ? res.dudas.filter(Boolean) : []};
-    almDone = null;
-    status('alm', 'Revisa lo que entendí y confirma.', 'ok');
-    renderAlmPreview();
+    if (!mostrarPropuestaAlm(res, pdfs.length ? 'pdf' : imgs.length ? 'foto' : '')) status('alm', 'No encontré movimientos en lo que enviaste. Revisa el texto o el PDF.', 'warn');
   } catch (e) { sampleError('alm', e); }
   finally { $('#alm-go').disabled = false; }
+}
+
+// Turns an assistant's answer (from the API or from the PC agent) into the review screen.
+function mostrarPropuestaAlm(res, fuente, bandejaId = null) {
+  const docs = (res && Array.isArray(res.documentos) ? res.documentos : []).map(d => ({
+    tipo: ['INGRESO', 'SALIDA', 'AJUSTE'].includes(d.tipo) ? d.tipo : 'SALIDA',
+    fecha: /^\d{4}-\d{2}-\d{2}$/.test(d.fecha || '') ? d.fecha : TODAY,
+    documento: String(d.documento || `WA-${TODAY.replace(/-/g, '')}`).trim(),
+    oc: String(d.oc || '').trim().toUpperCase(), tercero: String(d.tercero || '').trim(),
+    fuente: fuente || d.fuente || 'mensaje', nota: String(d.nota || ''),
+    items: (d.items || []).map(it => ({texto: String(it.texto || ''), codigo: prod(it.codigo) ? it.codigo : null, cantidad: Number(it.cantidad) || 0, unidad: String(it.unidad || ''), include: true}))
+  })).filter(d => d.items.length);
+  if (!docs.length) return false;
+  for (const d of docs) for (const it of d.items) if (it.codigo && S.movs.some(m => m.documento === d.documento && m.codigo === it.codigo)) it.include = false;
+  almPending = {docs, dudas: Array.isArray(res.dudas) ? res.dudas.filter(Boolean) : [], bandejaId};
+  almDone = null;
+  status('alm', 'Revisa lo que entendió el asistente y confirma.', 'ok');
+  renderAlmPreview();
+  $('#alm-preview').scrollIntoView({behavior: 'smooth', block: 'start'});
+  return true;
 }
 
 function evalAlm() {
@@ -975,6 +996,7 @@ async function confirmarAlmacen() {
       <div><h2>${rows.length} movimiento${rows.length === 1 ? '' : 's'} en el kardex</h2><p class="lede">${esc(nums[0])}${nums.length > 1 ? ' a ' + esc(nums[nums.length - 1]) : ''}. Stock actualizado.</p>
       ${bajo.length ? `<p class="note bad" style="font-size:14px">Bajo el mínimo: ${esc(bajo.join(', '))}. Lo verás en Pendientes.</p>` : ''}</div>
       <button class="btn" data-act="alm-new" style="margin-left:auto">Registrar otro</button></div></div>`;
+    if (almPending.bandejaId) cerrarBandeja(almPending.bandejaId, 'REGISTRADO');
     if (almPending.manual) resetManual(); else { almFiles = []; $('#alm-text').value = ''; renderThumbs('alm'); }
     almPending = null;
     status('alm', '');
@@ -1086,7 +1108,15 @@ async function procesarFacturas() {
   let pdfDocs = [];
   if (pdfs.length && sample) { status('fac', 'Abriendo el PDF…', '', true); const r = await leerPdfs(pdfs); bodyText += r.texto; pdfDocs = r.docs; }
   if (bodyText.trim() || imgs.length || pdfs.length) {
-    if (!sample) { status('fac', 'La lectura de PDF con IA se activa pronto. Sube el XML de la factura: se lee gratis y exacto.', 'warn'); if (!out.length) return; }
+    if (!sample) {
+      try {
+        status('fac', 'Enviando al asistente…', '', true);
+        await enviarBandeja('factura', bodyText.trim(), [...imgs, ...pdfs]);
+        status('fac', 'Enviado. El asistente lo lee en unos minutos y te aparece en la bandeja para revisar.', 'ok');
+        facFiles = []; renderThumbs('fac'); $('#fac-text').value = '';
+      } catch (e) { status('fac', 'No se pudo enviar el archivo. Revisa tu conexión y vuelve a intentar.', 'bad'); }
+      if (!out.length) return;
+    }
     else if (imgs.length && !canImages) { status('fac', 'Esta vista no permite enviar fotos. Sube el XML o pega el texto.', 'warn'); if (!out.length) return; }
     else {
       ctlFac = new AbortController(); $('#fac-go').disabled = true;
@@ -1110,11 +1140,7 @@ ${bodyText.slice(0, 30000) || '(ver el documento adjunto)'}
         if (imgs.length) opts.images = imgs.slice(0, imgMax || 5);
         if (pdfDocs.length) opts.documents = pdfDocs.slice(0, 3);
         const res = await sample.json(prompt, opts);
-        for (const x of (res && res.facturas) || []) out.push({origen: pdfs.length ? 'pdf' : imgs.length ? 'foto' : 'chat', f: {
-          tipo: x.tipo || 'FACTURA', serie_numero: normSerie(x.serie_numero), ruc: digits(x.ruc), proveedor: String(x.proveedor || ''), ruc_receptor: digits(x.ruc_receptor),
-          fecha_emision: x.fecha_emision || TODAY, fecha_vencimiento: x.fecha_vencimiento || '', moneda: x.moneda || 'PEN', oc: String(x.oc || '').toUpperCase(), guia: x.guia ? normSerie(x.guia) : '',
-          items: (x.items || []).map(it => ({texto: String(it.texto || ''), codigo: prod(it.codigo) ? it.codigo : null, cantidad: Number(it.cantidad) || 0, precio: Number(it.precio) || 0})),
-          subtotal: Number(x.subtotal) || 0, igv: Number(x.igv) || 0, total: Number(x.total) || 0, lectura: 'IA'}});
+        out.push(...facturasDeRespuesta(res, pdfs.length ? 'pdf' : imgs.length ? 'foto' : 'chat'));
       } catch (e) { sampleError('fac', e); $('#fac-go').disabled = false; if (!out.length) return; }
       $('#fac-go').disabled = false;
     }
@@ -1124,6 +1150,79 @@ ${bodyText.slice(0, 30000) || '(ver el documento adjunto)'}
   status('fac', `${out.length} factura${out.length === 1 ? '' : 's'} revisada${out.length === 1 ? '' : 's'}.`, 'ok');
   facFiles = []; renderThumbs('fac'); $('#fac-text').value = '';
   renderFacPreview();
+}
+
+function facturasDeRespuesta(res, origen) {
+  return ((res && res.facturas) || []).map(x => ({origen, f: {
+    tipo: x.tipo || 'FACTURA', serie_numero: normSerie(x.serie_numero), ruc: digits(x.ruc), proveedor: String(x.proveedor || ''), ruc_receptor: digits(x.ruc_receptor),
+    fecha_emision: x.fecha_emision || TODAY, fecha_vencimiento: x.fecha_vencimiento || '', moneda: x.moneda || 'PEN', oc: String(x.oc || '').toUpperCase(), guia: x.guia ? normSerie(x.guia) : '',
+    items: (x.items || []).map(it => ({texto: String(it.texto || ''), codigo: prod(it.codigo) ? it.codigo : null, cantidad: Number(it.cantidad) || 0, precio: Number(it.precio) || 0})),
+    subtotal: Number(x.subtotal) || 0, igv: Number(x.igv) || 0, total: Number(x.total) || 0, lectura: 'IA'}}));
+}
+
+/* ---------- Bandeja: lo que se envía al asistente que corre en la PC ---------- */
+async function jpegBlob(file) {
+  const j = await toJpeg(file);
+  const bin = atob(j.data); const buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return new Blob([buf], {type: 'image/jpeg'});
+}
+async function enviarBandeja(tipo, texto, files) {
+  const id = 'B-' + Date.now().toString(36);
+  const archivos = [];
+  for (const f of files) {
+    const esImg = f.type.startsWith('image/');
+    const blob = esImg ? await jpegBlob(f) : f;
+    const nombre = esImg ? (f.name || 'foto').replace(/\.\w+$/, '') + '.jpg' : f.name;
+    const mime = esImg ? 'image/jpeg' : (isPdf(f) ? 'application/pdf' : (f.type || 'text/plain'));
+    const path = `${EMP}/${id}/${safeId(nombre)}`;
+    const up = await sb.storage.from('bandeja').upload(path, blob, {contentType: mime});
+    if (up.error) throw up.error;
+    const sg = await sb.storage.from('bandeja').createSignedUrl(path, 60 * 60 * 24 * 7);
+    if (sg.error) throw sg.error;
+    archivos.push({nombre, mime, path, url: sg.data.signedUrl});
+  }
+  await db.doc('bandeja/' + id).set({id, tipo, estado: 'PENDIENTE', texto: texto || '', archivos, nota: '', propuesta: null, by: myId || '', ts: Date.now()});
+  return id;
+}
+const BANDEJA_STAMP = {PENDIENTE: ['En cola', 'mute'], LEYENDO: ['Leyendo', 'ink'], LISTO: ['Listo', 'ok'], ERROR: ['No se pudo leer', 'bad'], REGISTRADO: ['Registrado', 'ok'], DESCARTADO: ['Descartado', 'mute']};
+function renderBandeja(tipo) {
+  const box = $(tipo === 'almacen' ? '#alm-bandeja' : '#fac-bandeja');
+  if (!box) return;
+  const items = Object.values(S.bandeja || {}).filter(b => b.tipo === tipo).sort((a, b) => (b.ts || 0) - (a.ts || 0));
+  const activos = items.filter(b => !['REGISTRADO', 'DESCARTADO'].includes(b.estado));
+  const recientes = items.filter(b => b.estado === 'REGISTRADO').slice(0, 2);
+  const lista = [...activos, ...recientes];
+  box.closest('.panel').hidden = !lista.length;
+  box.innerHTML = lista.map(b => {
+    const [txt, kind] = BANDEJA_STAMP[b.estado] || [b.estado, 'mute'];
+    const que = (b.archivos || []).map(a => a.nombre).join(', ') || (b.texto || '').slice(0, 60) + ((b.texto || '').length > 60 ? '…' : '');
+    const detalle = b.estado === 'PENDIENTE' ? 'El asistente lo lee en unos minutos' : b.estado === 'LEYENDO' ? 'El asistente lo está leyendo ahora' : b.estado === 'ERROR' ? (b.nota || 'Prueba con un archivo más nítido') : b.estado === 'LISTO' ? (b.nota || 'Revisa lo que entendió y confirma') : '';
+    const acc = b.estado === 'LISTO' ? `<button class="btn sm primary" data-act="bj-ver" data-id="${esc(b.id)}">Revisar</button>`
+      : ['ERROR', 'PENDIENTE'].includes(b.estado) && canWrite ? `<button class="btn sm ghost" data-act="bj-quitar" data-id="${esc(b.id)}">Quitar</button>` : '';
+    return `<li><span class="stamp ${kind}">${esc(txt)}</span><div class="t">${esc(que)}<small>${esc(detalle)} · ${timeAgo(b.ts)}${b.by ? ` · <span class="who-name" data-uid="${esc(b.by)}"></span>` : ''}</small></div>${acc}</li>`;
+  }).join('');
+  fillNames();
+}
+function verBandeja(id) {
+  const b = S.bandeja[id]; if (!b || !b.propuesta) return;
+  const fuente = (b.archivos || []).some(a => a.mime === 'application/pdf') ? 'pdf' : (b.archivos || []).length ? 'foto' : 'mensaje';
+  if (b.tipo === 'almacen') {
+    show('almacen');
+    if (!mostrarPropuestaAlm(b.propuesta, fuente, id)) status('alm', 'El asistente no encontró movimientos en ese documento.', 'warn');
+  } else {
+    show('facturas');
+    const out = facturasDeRespuesta(b.propuesta, fuente);
+    if (!out.length) return status('fac', 'El asistente no encontró una factura en ese documento.', 'warn');
+    facPending = out.map(x => ({...x, r: conciliar(x.f), ui: 'pending', bandejaId: id}));
+    status('fac', 'Revisa lo que entendió el asistente y registra.', 'ok');
+    renderFacPreview();
+    $('#fac-preview').scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
+}
+async function cerrarBandeja(id, estado) {
+  if (!id || !S.bandeja[id]) return;
+  try { await db.doc('bandeja/' + id).update({estado}); } catch {}
 }
 
 function renderFacPreview() {
@@ -1168,6 +1267,7 @@ async function guardarFactura(i) {
     await db.doc('facturas/' + x.r.key).set({...facturaDoc(x.f, x.r, x.origen), registrado: TODAY, paquete: '', by: myId || '', ts: Date.now()});
     if (x.r.estado === 'CONCILIADA' && x.r.oc) await db.doc('ocs/' + safeId(x.r.oc)).update({facturada: true});
     x.ui = 'saved'; renderFacPreview();
+    if (x.bandejaId && facPending.filter(y => y.bandejaId === x.bandejaId).every(y => y.ui !== 'pending')) cerrarBandeja(x.bandejaId, 'REGISTRADO');
   } catch (e) { dbError('fac', e); if (btn) btn.disabled = false; }
 }
 async function reconciliar(key) {
@@ -1374,7 +1474,7 @@ async function vaciar() {
   if (Date.now() - wipeArmed > 5000) { wipeArmed = Date.now(); b.textContent = 'Sí, vaciar todo (no se puede deshacer)'; setTimeout(() => { if (Date.now() - wipeArmed >= 5000) b.textContent = 'Vaciar datos'; }, 5100); return; }
   wipeArmed = 0; b.disabled = true; b.textContent = 'Vaciar datos';
   try {
-    for (const col of ['productos', 'movimientos', 'ocs', 'facturas', 'ventas', 'cxc']) {
+    for (const col of ['productos', 'movimientos', 'ocs', 'facturas', 'ventas', 'cxc', 'bandeja']) {
       const snap = await db.collection(col).get();
       for (let i = 0; i < snap.docs.length; i++) { status('wipe', `Vaciando ${col}: ${i + 1} de ${snap.docs.length}…`, '', true); await db.doc(col + '/' + snap.docs[i].id).delete(); }
     }
@@ -1430,14 +1530,20 @@ function bindUI() {
     const act = e.target.closest('[data-act]'); if (!act) return;
     const a = act.dataset.act;
     if (a === 'alm-confirm') confirmarAlmacen();
-    else if (a === 'alm-cancel') { almPending = null; renderAlmPreview(); status('alm', ''); }
+    else if (a === 'alm-cancel') { if (almPending?.bandejaId) cerrarBandeja(almPending.bandejaId, 'DESCARTADO'); almPending = null; renderAlmPreview(); status('alm', ''); }
     else if (a === 'alm-new') { almDone = null; renderAlmPreview(); $('#alm-text').focus(); }
     else if (a === 'fac-save') guardarFactura(+act.dataset.i);
-    else if (a === 'fac-skip') { facPending[+act.dataset.i].ui = 'skipped'; renderFacPreview(); }
+    else if (a === 'fac-skip') {
+      const x = facPending[+act.dataset.i]; x.ui = 'skipped';
+      if (x.bandejaId && facPending.filter(y => y.bandejaId === x.bandejaId).every(y => y.ui !== 'pending')) cerrarBandeja(x.bandejaId, facPending.some(y => y.bandejaId === x.bandejaId && y.ui === 'saved') ? 'REGISTRADO' : 'DESCARTADO');
+      renderFacPreview();
+    }
     else if (a === 'fac-recon') reconciliar(act.dataset.k);
     else if (a === 'pkg-copy') copyText(pkgCSV(), 'fac', 'CSV copiado. Pégalo en un correo o en Excel.');
     else if (a === 'pkg-dl') downloads.save({filename: `registro_compras_${TODAY}.csv`, data: pkgCSV()}).then(() => status('fac', 'Registro de compras descargado.', 'ok')).catch(err => { if (err?.code !== 'declined') status('fac', 'No se pudo descargar el archivo.', 'bad'); });
     else if (a === 'pkg-mark') marcarEntregado();
+    else if (a === 'bj-ver') verBandeja(act.dataset.id);
+    else if (a === 'bj-quitar') cerrarBandeja(act.dataset.id, 'DESCARTADO');
   });
   $('#alm-preview').addEventListener('change', e => {
     const t = e.target; if (!t.dataset.k || !almPending) return;
@@ -1454,6 +1560,8 @@ function bindUI() {
   });
   $('#alm-file').addEventListener('change', e => { almFiles.push(...e.target.files); e.target.value = ''; renderThumbs('alm'); });
   document.querySelectorAll('.segbtn').forEach(b => b.addEventListener('click', () => setAlmMode(b.dataset.mode)));
+  $('#alm-cam').addEventListener('change', e => { almFiles.push(...e.target.files); e.target.value = ''; renderThumbs('alm'); });
+  $('#fac-cam').addEventListener('change', e => { facFiles.push(...e.target.files); e.target.value = ''; renderThumbs('fac'); });
   $('#m-add').addEventListener('click', () => { mRows.push({codigo: '', cantidad: ''}); renderMRows(); });
   $('#m-rows').addEventListener('click', e => { const x = e.target.closest('[data-mx]'); if (!x) return; readMRows(); mRows.splice(+x.dataset.mx, 1); if (!mRows.length) mRows.push({codigo: '', cantidad: ''}); renderMRows(); });
   $('#m-tipo').addEventListener('change', () => { $('#m-oc-field').hidden = $('#m-tipo').value !== 'INGRESO'; });
@@ -1634,7 +1742,7 @@ async function enterApp(session) {
   // The AI features switch on by themselves once the Claude key is saved in Supabase.
   const iaActiva = await sampleSB.json('estado', {task: 'estado'}).then(d => !!(d && d.ia)).catch(() => false);
   db = store; sample = iaActiva ? sampleSB : null; user = userSB; downloads = downloadsSB; canImages = true; imgMax = 5;
-  setAlmMode(iaActiva ? 'ia' : 'manual');
+  setAlmMode('ia');
   const sub = (q, key, fn) => q.onSnapshot(snap => { fn(snap); S.loaded.add(key); schedule(); });
   const map = snap => Object.fromEntries(snap.docs.map(d => [d.id, d.data()]));
   sub(db.collection('config'), 'config', s => { const d = s.docs.find(x => x.id === 'empresa'); S.empresa = d ? d.data() : {}; });
@@ -1644,6 +1752,7 @@ async function enterApp(session) {
   sub(db.collection('facturas'), 'facturas', s => { S.facturas = map(s); });
   sub(db.collection('ventas'), 'ventas', s => { S.ventas = map(s); });
   sub(db.collection('cxc'), 'cxc', s => { S.cxc = map(s); });
+  sub(db.collection('bandeja'), 'bandeja', s => { S.bandeja = map(s); });
   store.live();
   renderRepAI();
 }

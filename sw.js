@@ -1,6 +1,6 @@
 // Caches the app shell so it opens fast and installs as an app.
 // Data and AI calls always go to the network (Supabase).
-const VERSION = 'trastienda-v2';
+const VERSION = 'trastienda-v3';
 const SHELL = ['./', 'index.html', 'config.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
